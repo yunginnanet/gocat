@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 	"unsafe"
-
+	"C"
 	"github.com/fireeye/gocat/v6/hcargp"
 
 	"github.com/stretchr/testify/require"
@@ -101,8 +101,13 @@ func TestGoCatCrackingMD5(t *testing.T) {
 	crackedHashes := map[string]*string{}
 
 	hc, err := New(Options{
-		SharedPath: DefaultSharedPath,
+		ExecutablePath: "",
+		SharedPath:     DefaultSharedPath,
 	}, callbackForTests(crackedHashes))
+
+	fmt.Println(C.GoString(hc.executablePath))
+	fmt.Println(C.GoString(hc.sharedPath))
+
 	defer hc.Free()
 
 	require.NotNil(t, hc)
